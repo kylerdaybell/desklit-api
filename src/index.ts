@@ -1,0 +1,61 @@
+import cors from "cors";
+import * as dotenv from "dotenv";
+import express from "express";
+//controllers
+import { UserController } from "./Controllers/UserController";
+
+
+//services
+import {ConsoleLoggerService} from "./Services/Logging/ConsoleLoggerService"
+import { JWTAuthenticationService } from "./Services/Authentication/JWTAuthenticateService";
+import { UserService } from "./Services/Users/UserService";
+
+
+//repositories
+import {UserRepository} from "./Repositories/UserRepository";
+
+
+const result = dotenv.config();
+
+if (result.error) {
+  throw result.error;
+}
+//Logging Service
+const ILoggerService = new ConsoleLoggerService()
+
+// repositorys
+const IUserRepository = new UserRepository(ILoggerService);
+
+// services
+
+const IUserService = new UserService(IUserRepository,IMailerService);
+const IAuthenticationService = new JWTAuthenticationService(IUserService);
+
+// controllers
+const userController = new UserController(ILoggerService,IUserService, IAuthenticationService);
+
+
+
+// app setup.
+const app = express();
+const bodyParser = require("body-parser");
+const json = bodyParser.json({limit: "50mb", type: "application/json"});
+const urlencoded = bodyParser.urlencoded({ extended: false })
+const multer = require('multer');
+var storage = multer.memoryStorage()
+var upload = multer({ storage: storage })
+
+
+app.use(cors());
+
+//User Routes
+app.get("/", json,(req, res) => userController.GetRoot(req, res));
+app.post("/Register", json,(req, res) => userController.PostRegister(req, res));
+app.post("/Login", json,(req, res) => userController.PostLogin(req, res));
+app.post("/DeleteAccount",json, (req, res) => userController.PostDeleteUser(req, res));
+app.get("/Verify/:guid",(req,res)=>userController.VerifyEmail(req,res));
+
+
+app.listen(80, () =>
+  console.log("Example app listening on port 80!"),
+);

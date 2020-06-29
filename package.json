@@ -1,0 +1,62 @@
+{
+  "name": "Pop-API",
+  "version": "1.0.0",
+  "description": "A social networking API",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node ./dist/.",
+    "dev": "ts-node-dev src/index.ts",
+    "test": "jest",
+    "deploy": "pm2 start ./dist/.",
+    "stop": "pm2 stop all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kylerdaybell/Pop-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kylerdaybell/Pop-API/issues"
+  },
+  "homepage": "https://github.com/kylerdaybell/Pop-API#readme",
+  "dependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/nodemailer": "^6.4.0",
+    "@types/uuid": "^7.0.3",
+    "@types/express": "^4.17.6",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.1.0",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^11.15.12",
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.0",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "tslint": "^5.20.1",
+    "typescript": "^3.8.3"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  }
+}
