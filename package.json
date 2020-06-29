@@ -1,7 +1,7 @@
 {
-  "name": "Pop-API",
-  "version": "1.0.0",
-  "description": "A social networking API",
+  "name": "Desklit",
+  "version": "0.0.1",
+  "description": "An api for helpdesks",
   "main": "index.js",
   "scripts": {
     "prebuild": "",
@@ -26,9 +26,9 @@
   "homepage": "https://github.com/kylerdaybell/Pop-API#readme",
   "dependencies": {
     "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.6",
     "@types/nodemailer": "^6.4.0",
     "@types/uuid": "^7.0.3",
-    "@types/express": "^4.17.6",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

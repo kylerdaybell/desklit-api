@@ -1,24 +1,13 @@
 import { User } from "../../Models/UserModel";
 import { IUserRepository } from "../../Repositories/IUserRepository";
 import {IUserService} from "./IUserService";
-import { IMailerService } from "../Email/IMailerService";
 import { v1 as uuidv1 } from 'uuid';
 
 export class UserService implements IUserService {
     iuserrepository: IUserRepository;
-    imailservice: IMailerService
-    constructor(iuserrepository: IUserRepository,imailservice:IMailerService) {
+    constructor(iuserrepository: IUserRepository) {
         this.iuserrepository = iuserrepository;
-        this.imailservice = imailservice;
     }
-    //comment
-    public async VerifyEmail(guid: string): Promise<boolean> {
-        try{
-            return await this.iuserrepository.VerifyEmail(guid,"free");
-        }catch(e){
-            return false
-        }
-    } 
     public async ValidateUser(user: User): Promise<User|null> {
         const DBUser: User = await this.iuserrepository.GetExistingUser(user);
         if (DBUser.email !== "void" && DBUser.ValidatePassword(user.password)) {
@@ -41,10 +30,7 @@ export class UserService implements IUserService {
         const sercureuser = user.HashPassword();
         const guid = uuidv1()
         const result: boolean =  await this.iuserrepository.AddNewUser(sercureuser,guid);
-        let emailsent = false
-        emailsent = await this.imailservice.SendRegistrationEmail(user.email,guid)
-
-        if (result && emailsent) {
+        if (result) {
             return true;
         } else {
             return false;

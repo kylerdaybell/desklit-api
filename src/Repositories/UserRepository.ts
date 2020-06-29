@@ -22,7 +22,7 @@ export class UserRepository implements IUserRepository {
         if (user.email != "" && user.password != "") {
             const con = await this.getConnection();
             try {
-                const [rows] = await con.execute("INSERT INTO USER (EMAIL,PASSWORD,ROLE,EMAILCODE,PHOTO_COUNT) VALUE (?,?,?,?,?)", [user.email, user.password, user.authorization,guid,0]);
+                const [rows] = await con.execute("INSERT INTO USER (EMAIL,PASSWORD,ROLE) VALUE (?,?,?)", [user.email, user.password, user.authorization]);
                 return true;
             } catch (error) {
                 return false;
@@ -53,68 +53,6 @@ export class UserRepository implements IUserRepository {
         const con = await this.getConnection();
         try {
             const [rows] = await con.execute("Delete from USER where EMAIL = ?", [user.email]);
-            return true;
-        } catch (error) {
-            this.iloggerservice.error(error);
-            return false;
-        } finally {
-            con.end();
-        }
-    }
-    public async VerifyEmail(guid: string,level: string): Promise<boolean> {
-        const con = await this.getConnection();
-        try {
-            const [rows] = await con.execute("Select ID from USER where EMAILCODE = ?", [guid]);
-            const userID = rows[0].ID;
-            const [rows2] = await con.execute("UPDATE USER set EMAILCODE = ?,ROLE=? WHERE ID = ?",["NULL",level,userID])
-            return true;
-        } catch (error) {
-            this.iloggerservice.error(error);
-            return false;
-        } finally {
-            con.end();
-        }
-    }
-    public async GetAvailablePhotos(email: string): Promise<number> {
-        const con = await this.getConnection();
-        try {
-            const [rows] = await con.execute("Select ROLE,PHOTO_COUNT from USER where EMAIL = ?", [email]);
-            const role = rows[0].ROLE;
-            const photoCount = rows[0].PHOTO_COUNT;
-            if(role == "free"){
-                return 20- photoCount
-            }else if(role == "pro"){
-                return 200 - photoCount
-            }else if(role == "expert"){
-                return 2000 - photoCount
-            }
-            return 1;
-        } catch (error) {
-            this.iloggerservice.error(error);
-            return 0;
-        } finally {
-            con.end();
-        }
-    }
-
-    public async IncrementPhotoCount(email: string): Promise<boolean>{
-        const con = await this.getConnection();
-        try {
-            const [rows] = await con.execute("UPDATE USER SET PHOTO_COUNT = PHOTO_COUNT + 1 where EMAIL = ?", [email]);
-            return true;
-        } catch (error) {
-            this.iloggerservice.error(error);
-            return false;
-        } finally {
-            con.end();
-        }
-    }
-
-
-    public async DecrementPhotoCount(email: string): Promise<boolean>{
-        const con = await this.getConnection();
-        try {
-            const [rows] = await con.execute("UPDATE USER SET PHOTO_COUNT = PHOTO_COUNT - 1 where EMAIL = ?", [email]);
             return true;
         } catch (error) {
             this.iloggerservice.error(error);

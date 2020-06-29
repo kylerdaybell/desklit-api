@@ -28,7 +28,7 @@ const IUserRepository = new UserRepository(ILoggerService);
 
 // services
 
-const IUserService = new UserService(IUserRepository,IMailerService);
+const IUserService = new UserService(IUserRepository);
 const IAuthenticationService = new JWTAuthenticationService(IUserService);
 
 // controllers
@@ -40,10 +40,7 @@ const userController = new UserController(ILoggerService,IUserService, IAuthenti
 const app = express();
 const bodyParser = require("body-parser");
 const json = bodyParser.json({limit: "50mb", type: "application/json"});
-const urlencoded = bodyParser.urlencoded({ extended: false })
-const multer = require('multer');
-var storage = multer.memoryStorage()
-var upload = multer({ storage: storage })
+
 
 
 app.use(cors());
@@ -53,7 +50,6 @@ app.get("/", json,(req, res) => userController.GetRoot(req, res));
 app.post("/Register", json,(req, res) => userController.PostRegister(req, res));
 app.post("/Login", json,(req, res) => userController.PostLogin(req, res));
 app.post("/DeleteAccount",json, (req, res) => userController.PostDeleteUser(req, res));
-app.get("/Verify/:guid",(req,res)=>userController.VerifyEmail(req,res));
 
 
 app.listen(80, () =>

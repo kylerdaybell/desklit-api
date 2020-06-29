@@ -15,7 +15,7 @@ export class UserController {
     }
     public async PostRegister(req: Request, res: Response): Promise<void> {
         this.iloggerservice.log("IP:"+req.connection.remoteAddress+" Controller: User Function: PostClientRegister Time:"+Date.now());
-        const user = new User(null, req.body.User.email, req.body.User.password, "unverified");
+        const user = new User(null, req.body.User.email, req.body.User.password, "admin");
         if (await this.iuserservice.CreateUser(user,"client")) {
             res.write(JSON.stringify({Status: "success", Message: "The client was successfuly added to the database"}));
             res.end();
@@ -50,29 +50,8 @@ export class UserController {
     }
 
     public async GetRoot(req: Request, res: Response): Promise<void> {
-        this.iloggerservice.log("IP:"+req.connection.remoteAddress+" Controller: User Function: GetRoot Time:"+Date.now());
-        const user = await this.iauthenticationservice.AuthorizeToken(req, res, "free");
-        if (user) {
-            const response: string = JSON.stringify({Status: "success", Message: "You are authorized"});
-            res.write(response);
-            res.end();
-        }
+       res.write("Welcome to the application");
+       res.end();
 
     }
-
-    public async VerifyEmail(req:Request,res:Response): Promise<void>{
-        this.iloggerservice.log("IP:"+req.connection.remoteAddress+" Controller: User Function: VerifyClientEmail Time:"+Date.now());
-
-        const guid = req.params.guid;
-        if (await this.iuserservice.VerifyEmail(guid)) {
-            res.write(JSON.stringify({Status: "success", Message: "The client email was verified"}));
-            res.end();
-            return;
-        } else {
-            res.write(JSON.stringify({Status: "failure", Message: "The client email was not verified"}));
-            res.end();
-            return;
-        }
-    }
-
 }

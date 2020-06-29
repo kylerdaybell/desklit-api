@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {	
     "User":{
-		"email":"kyler.daybell96@gmail.com",
+		"email":"kyler@gmail.com",
 		"password":"kyler",
 		"authorization":"user"
 	}
@@ -13,12 +13,12 @@ Content-Type: application/json
 ###Delets a user if the token used is an admin token, or if the username in the token matches the username being deleted ie deleteing your own account
 
 POST http://localhost:80/DeleteAccount
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt5bGVyLmRheWJlbGw5NkBnbWFpbC5jb20iLCJhdXRob3JpemF0aW9uIjoidXNlciIsImlhdCI6MTU4NzkyMzY5MCwiZXhwIjoxNTg3OTI1NDkwfQ.O0rIt7ufYsPISGSRF9T52MuTL8wxfl4hP4ZlF3wirpk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt5bGVyLmRheWJlbGw5NkBnbWFpbC5jb20iLCJhdXRob3JpemF0aW9uIjoiYWRtaW4iLCJpYXQiOjE1OTM0NzE0MzksImV4cCI6MTU5MzQ3MzIzOX0.uLQlnYmksyDhOGbg-VpIr1eVjVqk8vXd6g4mNWDoRVg
 Content-Type: application/json
 
 {	
     "User":{
-		"email":"@gmail.com"
+		"email":"kyler@gmail.com"
 	}
 }
 
@@ -29,7 +29,7 @@ Content-Type: application/json
 
 {
     "User":{
-        "email":"kyler.daybell96@gmail.com",
+        "email":"kyler@gmail.com",
         "password":"kyler"
     }
 }
@@ -38,6 +38,3 @@ Content-Type: application/json
 
 GET http://localhost:80/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt5bGVyLmRheWJlbGwyQGdtYWlsLmNvbSIsImF1dGhvcml6YXRpb24iOiJ1c2VyIiwiaWF0IjoxNTg3ODY2ODA5LCJleHAiOjE1ODc4Njg2MDl9.Ylu0jQfOb2yBGW4mjvZZ52dM4vVVCz2RHntM_tww1Bs
-
-### This is to verify a client email
-GET http://localhost:80/verify/guid
