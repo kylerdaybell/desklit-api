@@ -13,6 +13,7 @@ import { UserService } from "./Services/Users/UserService";
 
 //repositories
 import {UserRepository} from "./Repositories/UserRepository";
+import { DatabaseAccess } from "./Repositories/DatabaseAccess";
 
 
 const result = dotenv.config();
@@ -23,8 +24,11 @@ if (result.error) {
 //Logging Service
 const ILoggerService = new ConsoleLoggerService()
 
+//Database Access
+const IDatabaseAccess = new DatabaseAccess(ILoggerService);
+
 // repositorys
-const IUserRepository = new UserRepository(ILoggerService);
+const IUserRepository = new UserRepository(ILoggerService, IDatabaseAccess);
 
 // services
 

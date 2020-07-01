@@ -1,26 +1,19 @@
 import { User } from "../Models/UserModel";
 import { IUserRepository } from "./IUserRepository";
 import { ILoggerService } from "../Services/Logging/ILoggerService";
+import { IDatabaseAccess } from "./IDatabaseAccess";
 const mysql2 = require("mysql2/promise");
 
 export class UserRepository implements IUserRepository {
     readonly iloggerservice:ILoggerService
-    constructor(iloggerservice:ILoggerService){
+    readonly idatabaseaccess:IDatabaseAccess
+    constructor(iloggerservice:ILoggerService,idatabaseaccess:IDatabaseAccess){
         this.iloggerservice = iloggerservice
-    }
-    async getConnection() {
-        const con = await mysql2.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_DATABASE,
-            
-        });
-        return con;
+        this.idatabaseaccess= idatabaseaccess;
     }
     public async AddNewUser(user: User,guid:string): Promise<any> {
         if (user.email != "" && user.password != "") {
-            const con = await this.getConnection();
+            const con = await this.idatabaseaccess.getConnection();
             try {
                 const [rows] = await con.execute("INSERT INTO USER (EMAIL,PASSWORD,ROLE) VALUE (?,?,?)", [user.email, user.password, user.authorization]);
                 return true;
@@ -32,7 +25,7 @@ export class UserRepository implements IUserRepository {
         }
     }
     public async GetExistingUser(user: User): Promise<User> {
-        const con = await this.getConnection();
+        const con = await this.idatabaseaccess.getConnection();
         try{
             const [rows] = await con.execute("SELECT * from USER where EMAIL = ?", [user.email]);
             if (typeof rows[0] != "undefined") {
@@ -50,7 +43,7 @@ export class UserRepository implements IUserRepository {
         }
     }
     public async RemoveUser(user: User): Promise<any> {
-        const con = await this.getConnection();
+        const con = await this.idatabaseaccess.getConnection();
         try {
             const [rows] = await con.execute("Delete from USER where EMAIL = ?", [user.email]);
             return true;
