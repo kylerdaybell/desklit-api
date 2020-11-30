@@ -5,7 +5,7 @@ test("UserModel constructor runs properly", () => {
     const user1 = new User(0, "kyler", "1234", "admin");
     expect(user1.password).toBe("1234");
     expect(user1.email).toBe("kyler");
-    expect(user1.authorization).toBe("user");
+    expect(user1.authorization).toBe("admin");
 });
 
 test("UserModel encrypting passwords returns an object with a properly encrypted password", () => {
